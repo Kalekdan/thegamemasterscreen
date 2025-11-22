@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './DiceRoller.css';
 
-const DiceRoller = ({ onDragStart, onDragEnd }) => {
+const DiceRoller = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout }) => {
   const [results, setResults] = useState([]);
   const [diceFormula, setDiceFormula] = useState('');
   const [formulaError, setFormulaError] = useState('');
@@ -32,20 +32,32 @@ const DiceRoller = ({ onDragStart, onDragEnd }) => {
   };
 
   const handleQuickRoll = (sides) => {
+    let rollResults;
     if (rollMode === 'flat') {
       const result = rollDice(sides);
-      setResults([{
+      rollResults = [{
         sides,
         value: result,
         isQuick: true
-      }]);
+      }];
+      setResults(rollResults);
+      
+      // Output to global overlay
+      if (setGlobalDiceResult) {
+        setGlobalDiceResult({
+          formula: `1d${sides}`,
+          rolls: [result],
+          modifier: 0,
+          total: result
+        });
+      }
     } else {
       // Roll twice for advantage/disadvantage
       const roll1 = rollDice(sides);
       const roll2 = rollDice(sides);
       const chosenValue = rollMode === 'advantage' ? Math.max(roll1, roll2) : Math.min(roll1, roll2);
       
-      setResults([
+      rollResults = [
         {
           sides,
           value: roll1,
@@ -60,7 +72,19 @@ const DiceRoller = ({ onDragStart, onDragEnd }) => {
           isChosen: roll2 === chosenValue && roll1 !== roll2,
           isDiscarded: roll2 !== chosenValue
         }
-      ]);
+      ];
+      setResults(rollResults);
+      
+      // Output to global overlay
+      if (setGlobalDiceResult) {
+        const mode = rollMode === 'advantage' ? 'Advantage' : 'Disadvantage';
+        setGlobalDiceResult({
+          formula: `1d${sides} (${mode})`,
+          rolls: [roll1, roll2],
+          modifier: 0,
+          total: chosenValue
+        });
+      }
     }
   };
 
@@ -187,6 +211,23 @@ const DiceRoller = ({ onDragStart, onDragEnd }) => {
       }
       
       setResults(rolls);
+      
+      // Output to global overlay
+      if (setGlobalDiceResult) {
+        const diceRolls = rolls.filter(r => !r.isModifier && !r.isDiscarded).map(r => r.value);
+        const total = rolls.reduce((sum, r) => {
+          if (r.isModifier) return sum + r.modifier;
+          if (r.isDiscarded) return sum;
+          return sum + (r.value * (r.sign || 1));
+        }, 0);
+        
+        setGlobalDiceResult({
+          formula: diceFormula,
+          rolls: diceRolls,
+          modifier: totalModifier,
+          total: total
+        });
+      }
     } catch (error) {
       setFormulaError(error.message);
     }

@@ -9,8 +9,19 @@
 .App-header {
   background-color: #2a2a2a;
   padding: 15px 20px;
-  text-align: center;
   border-bottom: 3px solid #444;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.header-content > div:first-child {
+  text-align: left;
 }
 
 .App-header h1 {
@@ -21,6 +32,44 @@
 
 .App-header p {
   margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.header-settings {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #1a1a1a;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #444;
+}
+
+.setting-label {
+  color: #888;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.timeout-input {
+  width: 60px;
+  padding: 5px 8px;
+  background-color: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.timeout-input:focus {
+  outline: none;
+  border-color: #a29bfe;
+}
+
+.timeout-unit {
   color: #888;
   font-size: 13px;
 }

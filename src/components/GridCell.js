@@ -3,6 +3,11 @@ import './GridCell.css';
 import DiceRoller from './dice-roller/DiceRoller';
 import Notes from './notes/Notes';
 import Timer from './timer/Timer';
+import Monsters from './monsters/Monsters';
+import Spells from './spells/Spells';
+import MagicItems from './magic-items/MagicItems';
+import Equipment from './equipment/Equipment';
+import Conditions from './conditions/Conditions';
 
 const GridCell = ({ 
   componentKey,
@@ -31,7 +36,9 @@ const GridCell = ({
   hoveredCellId,
   isInDropTargetArea,
   onDragEnter,
-  onDragLeave
+  onDragLeave,
+  setGlobalDiceResult,
+  overlayTimeout
 }) => {
   const handleClick = () => {
     if (!componentKey) {
@@ -44,7 +51,9 @@ const GridCell = ({
     
     const commonProps = {
       onDragStart: handleDragStart,
-      onDragEnd: onDragEnd
+      onDragEnd: onDragEnd,
+      setGlobalDiceResult,
+      overlayTimeout
     };
     
     if (componentType === 'dice-roller') {
@@ -53,6 +62,16 @@ const GridCell = ({
       return <Notes key={componentKey} {...commonProps} />;
     } else if (componentType === 'timer') {
       return <Timer key={componentKey} {...commonProps} />;
+    } else if (componentType === 'monsters') {
+      return <Monsters key={componentKey} {...commonProps} />;
+    } else if (componentType === 'spells') {
+      return <Spells key={componentKey} {...commonProps} />;
+    } else if (componentType === 'magic-items') {
+      return <MagicItems key={componentKey} {...commonProps} />;
+    } else if (componentType === 'equipment') {
+      return <Equipment key={componentKey} {...commonProps} />;
+    } else if (componentType === 'conditions') {
+      return <Conditions key={componentKey} {...commonProps} />;
     }
     return null;
   };

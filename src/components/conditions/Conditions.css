@@ -1,0 +1,162 @@
+.conditions {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 8px;
+  color: #ffffff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.conditions h3 {
+  margin: 0;
+  color: #9b59b6;
+  text-align: center;
+  font-size: 18px;
+}
+
+.error-message {
+  background-color: #d63031;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.loading {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* Condition List View */
+.condition-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.search-box {
+  width: 100%;
+}
+
+.condition-search {
+  width: 100%;
+  padding: 10px;
+  background-color: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.condition-search:focus {
+  outline: none;
+  border-color: #9b59b6;
+}
+
+.condition-search::placeholder {
+  color: #666;
+}
+
+.condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+.condition-list-item {
+  background-color: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+  color: white;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.condition-list-item:hover {
+  background-color: #9b59b6;
+  border-color: #9b59b6;
+  color: #ffffff;
+}
+
+/* Condition Details View */
+.condition-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 5px;
+}
+
+.back-button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  background-color: #444;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  background-color: #555;
+}
+
+.condition-name {
+  margin: 10px 0 5px 0;
+  color: #9b59b6;
+  font-size: 24px;
+  text-align: center;
+}
+
+.condition-description {
+  background-color: #2a2a2a;
+  padding: 12px;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+.condition-description p {
+  margin: 0 0 10px 0;
+}
+
+.condition-description p:last-child {
+  margin-bottom: 0;
+}
+
+.condition-description ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.condition-description li {
+  margin-bottom: 8px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import GridCell from './GridCell';
 import './DMGrid.css';
 
-const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick, onDeleteComponent, onCellResize, onComponentMove }) => {
+const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick, onDeleteComponent, onCellResize, onComponentMove, globalDiceResult, setGlobalDiceResult, overlayTimeout }) => {
   const [draggedCellId, setDraggedCellId] = React.useState(null);
   const [hoveredCellId, setHoveredCellId] = React.useState(null);
 
@@ -175,6 +175,8 @@ const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick,
           draggedCellId={draggedCellId}
           hoveredCellId={hoveredCellId}
           isInDropTargetArea={isInDropTargetArea}
+          setGlobalDiceResult={setGlobalDiceResult}
+          overlayTimeout={overlayTimeout}
         />
       );
     }

@@ -1,0 +1,87 @@
+/* Dice result overlay */
+.dice-result-overlay {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #2a2a2a;
+  border: 3px solid #74b9ff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.dice-result-overlay.exiting {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.dice-result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.dice-result-formula {
+  color: #74b9ff;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dice-result-rolls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dice-roll-value {
+  background-color: #74b9ff;
+  color: #1e1e1e;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.dice-modifier {
+  color: #74b9ff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.dice-result-total {
+  color: #00b894;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 5px;
+}

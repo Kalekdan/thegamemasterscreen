@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import './App.css';
 import DMGrid from './components/DMGrid';
 import GridControls from './components/GridControls';
 import ComponentSelector from './components/ComponentSelector';
-import DiceRoller from './components/dice-roller/DiceRoller';
-import Notes from './components/notes/Notes';
-import Timer from './components/timer/Timer';
+import DiceResultOverlay from './components/shared/DiceResultOverlay';
 
 function App() {
   const [rows, setRows] = useState(2);
-  const [cols, setCols] = useState(3);
+  const [cols, setCols] = useState(5);
   const [cells, setCells] = useState({});
   const [cellSpans, setCellSpans] = useState({}); // { cellId: { colSpan, rowSpan } }
   const [selectedCellId, setSelectedCellId] = useState(null);
   const [showSelector, setShowSelector] = useState(false);
   const [componentInstances, setComponentInstances] = useState({}); // Store component types and keys
+  const [globalDiceResult, setGlobalDiceResult] = useState(null);
+  const [overlayTimeout, setOverlayTimeout] = useState(8);
+  const diceTimeoutRef = useRef(null);
+
+  const handleSetGlobalDiceResult = useCallback((result) => {
+    // Clear any existing timeout
+    if (diceTimeoutRef.current) {
+      clearTimeout(diceTimeoutRef.current);
+      diceTimeoutRef.current = null;
+    }
+
+    setGlobalDiceResult(result);
+
+    // Set new timeout if result is not null
+    if (result) {
+      diceTimeoutRef.current = setTimeout(() => {
+        setGlobalDiceResult(null);
+        diceTimeoutRef.current = null;
+      }, overlayTimeout * 1000);
+    }
+  }, [overlayTimeout]);
 
   const handleCellClick = (cellId) => {
     setSelectedCellId(cellId);
@@ -216,8 +235,27 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>🎲 DM Screen</h1>
-        <p>Click on any grid cell to add a component</p>
+        <div className="header-content">
+          <div>
+            <h1>🎲 DM Screen</h1>
+            <p>Click on any grid cell to add a component</p>
+          </div>
+          <div className="header-settings">
+            <label htmlFor="overlay-timeout" className="setting-label">
+              Dice Overlay Duration:
+            </label>
+            <input
+              id="overlay-timeout"
+              type="number"
+              min="1"
+              max="30"
+              value={overlayTimeout}
+              onChange={(e) => setOverlayTimeout(Math.max(1, Math.min(30, parseInt(e.target.value) || 8)))}
+              className="timeout-input"
+            />
+            <span className="timeout-unit">seconds</span>
+          </div>
+        </div>
       </header>
       <GridControls
         rows={rows}
@@ -237,6 +275,9 @@ function App() {
         onDeleteComponent={handleDeleteComponent}
         onCellResize={handleCellResize}
         onComponentMove={handleComponentMove}
+        globalDiceResult={globalDiceResult}
+        setGlobalDiceResult={handleSetGlobalDiceResult}
+        overlayTimeout={overlayTimeout}
       />
       {showSelector && (
         <ComponentSelector
@@ -244,6 +285,7 @@ function App() {
           onClose={handleCloseSelector}
         />
       )}
+      <DiceResultOverlay diceResult={globalDiceResult} />
       <footer className="App-footer">
         <div className="footer-content">
           <p className="made-by">Made by <a href="https://joerickard.co.uk" target="_blank" rel="noopener noreferrer">Joe Rickard</a></p>

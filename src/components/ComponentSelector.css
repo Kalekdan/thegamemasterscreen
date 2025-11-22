@@ -30,8 +30,34 @@
 .component-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
   margin-bottom: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.component-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-title {
+  color: #a29bfe;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 0 4px 0;
+  border-bottom: 2px solid #444;
+  margin-bottom: 4px;
+}
+
+.group-components {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .component-option {
@@ -52,7 +78,6 @@
 .component-option:not(.disabled):hover {
   background-color: #333;
   border-color: #a29bfe;
-  transform: translateX(5px);
 }
 
 .component-option.disabled {
