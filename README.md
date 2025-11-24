@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# 🎲 GM Utils - The Game Master Screen
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A customizable digital DM screen for tabletop RPG game masters, featuring dice rollers, timers, monster stats, spell references, and more utilities to help run your D&D sessions smoothly.
 
-## Available Scripts
+## 🌐 Live Demo
 
-In the project directory, you can run:
+Try it now at: **[thegamemasterscreen.com](https://thegamemasterscreen.com)**
 
-### `npm start`
+## ✨ Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Empty Grid View](https://github.com/user-attachments/assets/0f92534f-11a0-4377-ac58-3ff64d1c5414)
+*Customizable grid layout - click any cell to add a component, resize and move to wherever you need them*
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Component Selector](https://github.com/user-attachments/assets/f4211153-7688-4287-bcad-a7b2f42d37d0)
+*Wide variety of utilities and D&D 2024 Edition rules reference components*
 
-### `npm test`
+![Multiple Components](https://github.com/user-attachments/assets/d1cc1054-de43-4ad8-8185-d15da8b8a80e)
+*Example screen with Dice Roller, Monsters, and Timer components*
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Available Components
 
-### `npm run build`
+**Utilities:**
+- 🎲 **Dice Roller** - Roll any dice combination with advantage/disadvantage support
+- 📝 **Notes** - Take session notes
+- ⏱️ **Timer** - Countdown timer for tracking time-sensitive events
+- 🌐 **Web Page Embed** - Embed external web pages
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**D&D 2024 Edition Rules:**
+- 🐉 **Monsters** - Quick monster stat lookup
+- ✨ **Spells** - Spell reference and search
+- ⚔️ **Equipment** - Equipment and weapons database
+- 💎 **Magic Items** - Magic item references
+- 💀 **Conditions** - Status condition effects
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Key Features:
+- **Customizable Grid Layout** - Arrange components in a flexible grid (adjustable rows and columns)
+- **Drag & Drop** - Move components around your screen
+- **Resizable Components** - Expand components to span multiple grid cells
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Running Locally
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Node.js (v20 or higher recommended)
+- pnpm (install with `npm install -g pnpm`)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Installation & Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Kalekdan/GMUtils.git
+   cd GMUtils
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-## Learn More
+3. Start the development server:
+   ```bash
+   pnpm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The page will reload automatically when you make changes.
 
-### Code Splitting
+## 👨‍💻 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Made by [Joe Rickard](https://joerickard.co.uk)
 
-### Analyzing the Bundle Size
+## 💖 Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+If you find this tool helpful, consider [buying me a coffee](https://www.buymeacoffee.com/joerickard)!
 
-### Making a Progressive Web App
+## 📝 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is open source and available under the MIT License.
