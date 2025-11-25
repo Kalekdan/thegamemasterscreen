@@ -4,21 +4,28 @@ import './ComponentSelector.css';
 const ComponentSelector = ({ onSelect, onClose }) => {
   const componentGroups = [
     {
-      title: 'Utilities',
+      title: 'Combat & Initiative',
       components: [
-        { id: 'dice-roller', name: 'Dice Roller', icon: '🎲' },
-        { id: 'notes', name: 'Notes', icon: '📝' },
-        { id: 'timer', name: 'Timer', icon: '⏱️' },
-        { id: 'clock', name: 'Elapsed Time Clock', icon: '🕐' },
-        { id: 'checklist', name: 'Checklist', icon: '✓' },
         { id: 'initiative-tracker', name: 'Initiative Tracker', icon: '🎯' },
-        { id: 'webpage-embed', name: 'Web Page Embed', icon: '🌐' },
-        { id: 'name-generator', name: 'Name Generator', icon: '📛', disabled: true },
-        { id: 'coin-converter', name: 'Coin Converter', icon: '💰', disabled: true },
+        { id: 'dice-roller', name: 'Dice Roller', icon: '🎲' },
       ]
     },
     {
-      title: 'D&D 2024 Edition Rules',
+      title: 'Time Tracking',
+      components: [
+        { id: 'timer', name: 'Countdown Timer', icon: '⏱️' },
+        { id: 'clock', name: 'Elapsed Time', icon: '🕐' },
+      ]
+    },
+    {
+      title: 'Notes & Planning',
+      components: [
+        { id: 'notes', name: 'Notes', icon: '📝' },
+        { id: 'checklist', name: 'Checklist', icon: '✓' },
+      ]
+    },
+    {
+      title: 'D&D 2024 Rules Reference',
       components: [
         { id: 'monsters', name: 'Monsters', icon: '🐉' },
         { id: 'spells', name: 'Spells', icon: '✨' },
@@ -26,13 +33,21 @@ const ComponentSelector = ({ onSelect, onClose }) => {
         { id: 'magic-items', name: 'Magic Items', icon: '💎' },
         { id: 'conditions', name: 'Conditions', icon: '💀' },
       ]
+    },
+    {
+      title: 'Other Tools',
+      components: [
+        { id: 'webpage-embed', name: 'Web Page', icon: '🌐' },
+        { id: 'name-generator', name: 'Name Generator', icon: '📛', disabled: true },
+        { id: 'coin-converter', name: 'Coin Converter', icon: '💰', disabled: true },
+      ]
     }
   ];
 
   return (
     <div className="selector-overlay" onClick={onClose}>
       <div className="selector-modal" onClick={(e) => e.stopPropagation()}>
-        <h3>Select Component</h3>
+        <h3>Add Component</h3>
         <div className="component-list">
           {componentGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="component-group">
@@ -47,7 +62,7 @@ const ComponentSelector = ({ onSelect, onClose }) => {
                   >
                     <span className="component-icon">{comp.icon}</span>
                     <span className="component-name">{comp.name}</span>
-                    {comp.disabled && <span className="coming-soon">(Coming Soon)</span>}
+                    {comp.disabled && <span className="coming-soon">(Soon)</span>}
                   </button>
                 ))}
               </div>
@@ -61,10 +76,10 @@ const ComponentSelector = ({ onSelect, onClose }) => {
             rel="noopener noreferrer"
             className="suggest-feature-link"
           >
-            💡 Suggest a New Feature
+            💡 Suggest a Feature
           </a>
           <button className="close-button" onClick={onClose}>
-            Cancel
+            Close
           </button>
         </div>
       </div>
