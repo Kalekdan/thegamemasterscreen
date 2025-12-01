@@ -326,3 +326,8 @@
 .App.hide-titles .grid-cell h3 {
   display: none;
 }
+
+/* Exception: Initiative Tracker title is always visible */
+.App.hide-titles .grid-cell h3.always-visible {
+  display: block;
+}

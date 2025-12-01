@@ -19,6 +19,8 @@ function App() {
   const [globalDiceResult, setGlobalDiceResult] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFullscreenClose, setShowFullscreenClose] = useState(false);
+  const [initiativeTrackerRefs, setInitiativeTrackerRefs] = useState({}); // Store refs to initiative tracker methods
+  const initiativeTrackerCounterRef = useRef(1); // Counter for naming initiative trackers
   const [showSettings, setShowSettings] = useState(false);
   const [showScreenManager, setShowScreenManager] = useState(false);
   const [settings, setSettings] = useState({
@@ -54,6 +56,21 @@ function App() {
     }
   }, [settings.diceOverlay, settings.diceOverlayDuration]);
 
+  const registerInitiativeTracker = useCallback((componentKey, methods, trackerName) => {
+    setInitiativeTrackerRefs(prev => ({
+      ...prev,
+      [componentKey]: { ...methods, name: trackerName }
+    }));
+  }, []);
+
+  const unregisterInitiativeTracker = useCallback((componentKey) => {
+    setInitiativeTrackerRefs(prev => {
+      const newRefs = { ...prev };
+      delete newRefs[componentKey];
+      return newRefs;
+    });
+  }, []);
+
   const toggleFullscreen = useCallback(() => {
     setIsFullscreen(prev => !prev);
   }, []);
@@ -87,36 +104,47 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isFullscreen]);
 
-  const handleCellClick = (cellId) => {
+  const handleCellClick = useCallback((cellId) => {
     setSelectedCellId(cellId);
     setShowSelector(true);
-  };
+  }, []);
 
-  const handleComponentSelect = (componentId) => {
+  const handleComponentSelect = useCallback((componentId) => {
     // Create a unique key for this component instance
     const componentKey = `${componentId}-${Date.now()}`;
     
-    setCells({
-      ...cells,
+    setCells(prevCells => ({
+      ...prevCells,
       [selectedCellId]: componentKey,
-    });
+    }));
     
-    setComponentInstances({
-      ...componentInstances,
-      [componentKey]: { type: componentId }
-    });
+    const instanceData = { type: componentId };
+    
+    // If this is an initiative tracker, assign a default name
+    if (componentId === 'initiative-tracker') {
+      instanceData.defaultName = `Initiative Tracker ${initiativeTrackerCounterRef.current}`;
+      initiativeTrackerCounterRef.current += 1;
+    }
+    
+    setComponentInstances(prevInstances => ({
+      ...prevInstances,
+      [componentKey]: instanceData
+    }));
     
     // Initialize span to 1x1 if not already set
-    if (!cellSpans[selectedCellId]) {
-      setCellSpans({
-        ...cellSpans,
-        [selectedCellId]: { colSpan: 1, rowSpan: 1 }
-      });
-    }
+    setCellSpans(prevSpans => {
+      if (!prevSpans[selectedCellId]) {
+        return {
+          ...prevSpans,
+          [selectedCellId]: { colSpan: 1, rowSpan: 1 }
+        };
+      }
+      return prevSpans;
+    });
     
     setShowSelector(false);
     setSelectedCellId(null);
-  };
+  }, [selectedCellId]);
 
   const handleDeleteComponent = (cellId) => {
     const componentKey = cells[cellId];
@@ -408,6 +436,9 @@ function App() {
         globalDiceResult={globalDiceResult}
         setGlobalDiceResult={handleSetGlobalDiceResult}
         hideTitles={settings.hideTitles}
+        initiativeTrackerRefs={initiativeTrackerRefs}
+        registerInitiativeTracker={registerInitiativeTracker}
+        unregisterInitiativeTracker={unregisterInitiativeTracker}
       />
       {showSelector && (
         <ComponentSelector

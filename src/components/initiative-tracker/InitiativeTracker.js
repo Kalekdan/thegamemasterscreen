@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './InitiativeTracker.css';
 import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey }) => {
+const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey, registerInitiativeTracker, unregisterInitiativeTracker, defaultName }) => {
   const [entries, setEntries] = useState([]);
   const [currentTurn, setCurrentTurn] = useState(0);
   const [roundNumber, setRoundNumber] = useState(1);
@@ -14,6 +14,9 @@ const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, compon
   const [showHpAdjustFor, setShowHpAdjustFor] = useState(null);
   const [hpAdjustValue, setHpAdjustValue] = useState('');
   const [isInitialized, setIsInitialized] = useState(false);
+  const [trackerName, setTrackerName] = useState('Initiative Tracker');
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [tempName, setTempName] = useState('');
 
   // Load state on mount
   useEffect(() => {
@@ -24,22 +27,17 @@ const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, compon
         if (savedState.currentTurn !== undefined) setCurrentTurn(savedState.currentTurn);
         if (savedState.roundNumber !== undefined) setRoundNumber(savedState.roundNumber);
         if (savedState.viewMode !== undefined) setViewMode(savedState.viewMode);
+        if (savedState.trackerName !== undefined) {
+          setTrackerName(savedState.trackerName);
+        } else if (defaultName) {
+          setTrackerName(defaultName);
+        }
+      } else if (defaultName) {
+        setTrackerName(defaultName);
       }
       setIsInitialized(true);
     }
-  }, [componentKey]);
-
-  // Save state when it changes
-  useEffect(() => {
-    if (componentKey && isInitialized) {
-      saveComponentState(componentKey, {
-        entries,
-        currentTurn,
-        roundNumber,
-        viewMode
-      });
-    }
-  }, [componentKey, entries, currentTurn, roundNumber, viewMode, isInitialized]);
+  }, [componentKey, defaultName]);
 
   const conditionsList = [
     'Blinded', 'Charmed', 'Concentrating', 'Deafened', 'Frightened', 'Grappled',
@@ -73,6 +71,52 @@ const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, compon
     setEntries(newEntries);
     setEditingId(entry.id);
   };
+
+  const addMonsterEntry = useCallback((monsterData, type = 'enemy') => {
+    const entry = {
+      id: Date.now(),
+      name: monsterData.name,
+      initiative: 10,
+      hp: monsterData.hit_points || 10,
+      maxHp: monsterData.hit_points || 10,
+      ac: monsterData.armor_class?.[0]?.value || monsterData.armor_class || 10,
+      type: type,
+      conditions: []
+    };
+
+    setEntries(prevEntries => {
+      const newEntries = [...prevEntries, entry].sort((a, b) => b.initiative - a.initiative);
+      return newEntries;
+    });
+    setEditingId(entry.id);
+  }, []);
+
+  // Register this tracker's methods with parent
+  useEffect(() => {
+    if (componentKey && registerInitiativeTracker) {
+      registerInitiativeTracker(componentKey, {
+        addMonster: addMonsterEntry
+      }, trackerName);
+    }
+    return () => {
+      if (componentKey && unregisterInitiativeTracker) {
+        unregisterInitiativeTracker(componentKey);
+      }
+    };
+  }, [componentKey, registerInitiativeTracker, unregisterInitiativeTracker, trackerName, addMonsterEntry]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        entries,
+        currentTurn,
+        roundNumber,
+        viewMode,
+        trackerName
+      });
+    }
+  }, [componentKey, entries, currentTurn, roundNumber, viewMode, trackerName, isInitialized]);
 
   const updateEntry = (id, field, value) => {
     setEntries(entries.map(e => {
@@ -215,7 +259,40 @@ const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, compon
       </div>
       <div className="tracker-header">
         <div className="header-left">
-          <h3>⚔️ Initiative Tracker</h3>
+          {isEditingName ? (
+            <input
+              type="text"
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              onBlur={() => {
+                if (tempName.trim()) {
+                  setTrackerName(tempName.trim());
+                }
+                setIsEditingName(false);
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  if (tempName.trim()) {
+                    setTrackerName(tempName.trim());
+                  }
+                  setIsEditingName(false);
+                }
+              }}
+              className="tracker-name-input"
+              autoFocus
+            />
+          ) : (
+            <h3 
+              className="tracker-title always-visible"
+              onClick={() => {
+                setTempName(trackerName);
+                setIsEditingName(true);
+              }}
+              title="Click to edit name"
+            >
+              ⚔️ {trackerName}
+            </h3>
+          )}
           <div className="round-display">Round {roundNumber}</div>
         </div>
       </div>

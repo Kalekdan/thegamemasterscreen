@@ -135,8 +135,13 @@
   padding-right: 5px;
 }
 
+.monster-actions-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 .back-button {
-  align-self: flex-start;
   padding: 5px 10px;
   background-color: #444;
   border: none;
@@ -145,10 +150,37 @@
   font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .back-button:hover {
   background-color: #555;
+}
+
+.add-to-initiative-btn {
+  flex: 1;
+  padding: 5px 10px;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.add-to-initiative-btn:hover:not(.disabled) {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.add-to-initiative-btn.disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .monster-name {
@@ -286,6 +318,140 @@
 .dice-roll-link:hover {
   color: #5fa3e8;
   text-decoration: none;
+}
+
+/* Tracker Selector Modal */
+.tracker-selector-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.tracker-selector-content {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.tracker-selector-content h4 {
+  margin: 0 0 10px 0;
+  color: #e74c3c;
+  font-size: 18px;
+  text-align: center;
+  text-transform: none;
+  border: none;
+  padding: 0;
+}
+
+.tracker-selector-content p {
+  margin: 0 0 15px 0;
+  color: #aaa;
+  font-size: 14px;
+  text-align: center;
+}
+
+.tracker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tracker-option {
+  padding: 12px;
+  background-color: #1e1e1e;
+  border: 2px solid #e74c3c;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+.tracker-option:hover {
+  background-color: #e74c3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+  }
+  50% {
+    border-color: #ff8080;
+    box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
+  }
+}
+
+.tracker-selector-content .cancel-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #444;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tracker-selector-content .cancel-button:hover {
+  background-color: #555;
+}
+
+.tracker-option.ally-option {
+  border-color: #74b9ff;
+  animation: pulse-ally 2s ease-in-out infinite;
+}
+
+.tracker-option.ally-option:hover {
+  background-color: #74b9ff;
+  border-color: #74b9ff;
+}
+
+.tracker-option.enemy-option {
+  border-color: #e74c3c;
+  animation: pulse-enemy 2s ease-in-out infinite;
+}
+
+.tracker-option.enemy-option:hover {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+@keyframes pulse-ally {
+  0%, 100% {
+    border-color: #74b9ff;
+    box-shadow: 0 0 0 0 rgba(116, 185, 255, 0.4);
+  }
+  50% {
+    border-color: #a8d0ff;
+    box-shadow: 0 0 0 8px rgba(116, 185, 255, 0);
+  }
+}
+
+@keyframes pulse-enemy {
+  0%, 100% {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+  }
+  50% {
+    border-color: #ff8080;
+    box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
+  }
 }
 
 /* Responsive adjustments for smaller cells */

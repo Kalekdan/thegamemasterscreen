@@ -2,7 +2,7 @@ import React from 'react';
 import GridCell from './GridCell';
 import './DMGrid.css';
 
-const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick, onDeleteComponent, onCellResize, onComponentMove, globalDiceResult, setGlobalDiceResult, hideTitles }) => {
+const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick, onDeleteComponent, onCellResize, onComponentMove, globalDiceResult, setGlobalDiceResult, hideTitles, initiativeTrackerRefs, registerInitiativeTracker, unregisterInitiativeTracker }) => {
   const [draggedCellId, setDraggedCellId] = React.useState(null);
   const [hoveredCellId, setHoveredCellId] = React.useState(null);
 
@@ -177,6 +177,10 @@ const DMGrid = ({ rows, cols, cells, cellSpans, componentInstances, onCellClick,
           isInDropTargetArea={isInDropTargetArea}
           setGlobalDiceResult={setGlobalDiceResult}
           hideTitles={hideTitles}
+          initiativeTrackerRefs={initiativeTrackerRefs}
+          registerInitiativeTracker={registerInitiativeTracker}
+          unregisterInitiativeTracker={unregisterInitiativeTracker}
+          componentInstances={componentInstances}
         />
       );
     }

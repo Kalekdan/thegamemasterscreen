@@ -33,6 +33,32 @@
   padding-left: 30px;
 }
 
+.tracker-header h3.tracker-title {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.tracker-header h3.tracker-title:hover {
+  color: #8c7ae6;
+}
+
+.tracker-name-input {
+  font-size: 14px;
+  color: #a29bfe;
+  background-color: #2a2a2a;
+  border: 2px solid #a29bfe;
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-left: 30px;
+  font-weight: bold;
+  width: 200px;
+}
+
+.tracker-name-input:focus {
+  outline: none;
+  border-color: #8c7ae6;
+}
+
 .round-display {
   font-size: 12px;
   font-weight: bold;

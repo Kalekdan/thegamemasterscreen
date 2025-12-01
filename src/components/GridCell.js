@@ -42,7 +42,11 @@ const GridCell = ({
   onDragEnter,
   onDragLeave,
   setGlobalDiceResult,
-  hideTitles
+  hideTitles,
+  initiativeTrackerRefs,
+  registerInitiativeTracker,
+  unregisterInitiativeTracker,
+  componentInstances
 }) => {
   const handleClick = () => {
     if (!componentKey) {
@@ -72,7 +76,7 @@ const GridCell = ({
     } else if (componentType === 'checklist') {
       return <Checklist key={componentKey} {...commonProps} />;
     } else if (componentType === 'monsters') {
-      return <Monsters key={componentKey} {...commonProps} />;
+      return <Monsters key={componentKey} {...commonProps} initiativeTrackerRefs={initiativeTrackerRefs} />;
     } else if (componentType === 'spells') {
       return <Spells key={componentKey} {...commonProps} />;
     } else if (componentType === 'magic-items') {
@@ -84,7 +88,8 @@ const GridCell = ({
     } else if (componentType === 'webpage-embed') {
       return <WebPageEmbed key={componentKey} {...commonProps} />;
     } else if (componentType === 'initiative-tracker') {
-      return <InitiativeTracker key={componentKey} {...commonProps} />;
+      const defaultName = componentInstances && componentInstances[componentKey]?.defaultName;
+      return <InitiativeTracker key={componentKey} {...commonProps} registerInitiativeTracker={registerInitiativeTracker} unregisterInitiativeTracker={unregisterInitiativeTracker} defaultName={defaultName} />;
     }
     return null;
   };

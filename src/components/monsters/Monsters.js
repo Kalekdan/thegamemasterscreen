@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './Monsters.css';
 import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout, componentKey }) => {
+const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout, componentKey, initiativeTrackerRefs }) => {
   const [monsterList, setMonsterList] = useState([]);
   const [selectedMonster, setSelectedMonster] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isInitialized, setIsInitialized] = useState(false);
+  const [showTrackerSelector, setShowTrackerSelector] = useState(false);
+  const [showTypeSelector, setShowTypeSelector] = useState(false);
+  const [selectedTrackerKey, setSelectedTrackerKey] = useState(null);
 
   // Load state on mount
   useEffect(() => {
@@ -42,11 +45,6 @@ const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout,
     if (onDragEnd) onDragEnd(e);
   };
 
-  // Fetch monster list on component mount
-  useEffect(() => {
-    fetchMonsterList();
-  }, []);
-
   const fetchMonsterList = async () => {
     try {
       setLoading(true);
@@ -61,6 +59,12 @@ const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout,
       setLoading(false);
     }
   };
+
+  // Fetch monster list on component mount
+  useEffect(() => {
+    fetchMonsterList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchMonsterDetails = async (index) => {
     try {
@@ -89,6 +93,38 @@ const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout,
   const formatModifier = (score) => {
     const modifier = Math.floor((score - 10) / 2);
     return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+  };
+
+  const getInitiativeTrackers = () => {
+    return initiativeTrackerRefs ? Object.entries(initiativeTrackerRefs) : [];
+  };
+
+  const handleAddToTracker = (trackerKey, type) => {
+    if (!selectedMonster || !initiativeTrackerRefs[trackerKey]) return;
+    
+    initiativeTrackerRefs[trackerKey].addMonster(selectedMonster, type);
+    setShowTrackerSelector(false);
+    setShowTypeSelector(false);
+    setSelectedTrackerKey(null);
+  };
+
+  const handleTrackerSelected = (trackerKey) => {
+    setSelectedTrackerKey(trackerKey);
+    setShowTrackerSelector(false);
+    setShowTypeSelector(true);
+  };
+
+  const handleAddToInitiativeClick = () => {
+    const trackers = getInitiativeTrackers();
+    
+    if (trackers.length === 0) return;
+    
+    if (trackers.length === 1) {
+      setSelectedTrackerKey(trackers[0][0]);
+      setShowTypeSelector(true);
+    } else {
+      setShowTrackerSelector(true);
+    }
   };
 
   const rollDice = (diceString) => {
@@ -214,9 +250,80 @@ const Monsters = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout,
         </div>
       ) : (
         <div className="monster-details">
-          <button className="back-button" onClick={handleBackToList}>
-            ← Back to List
-          </button>
+          <div className="monster-actions-bar">
+            <button className="back-button" onClick={handleBackToList}>
+              ← Back to List
+            </button>
+            <button 
+              className={`add-to-initiative-btn ${getInitiativeTrackers().length === 0 ? 'disabled' : ''}`}
+              onClick={handleAddToInitiativeClick}
+              disabled={getInitiativeTrackers().length === 0}
+              title={getInitiativeTrackers().length === 0 ? 'No Initiative Tracker found' : 'Add to Initiative Tracker'}
+            >
+              ⚔️ Add to Initiative
+            </button>
+          </div>
+
+          {showTrackerSelector && getInitiativeTrackers().length > 1 && (
+            <div className="tracker-selector-modal" onClick={() => setShowTrackerSelector(false)}>
+              <div className="tracker-selector-content" onClick={(e) => e.stopPropagation()}>
+                <h4>Select Initiative Tracker</h4>
+                <p>Multiple initiative trackers found. Choose one:</p>
+                <div className="tracker-list">
+                  {getInitiativeTrackers().map(([key, methods]) => (
+                    <button
+                      key={key}
+                      className="tracker-option highlight-pulse"
+                      onClick={() => handleTrackerSelected(key)}
+                    >
+                      {methods.name || 'Initiative Tracker'}
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  className="cancel-button"
+                  onClick={() => setShowTrackerSelector(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {showTypeSelector && (
+            <div className="tracker-selector-modal" onClick={() => {
+              setShowTypeSelector(false);
+              setSelectedTrackerKey(null);
+            }}>
+              <div className="tracker-selector-content" onClick={(e) => e.stopPropagation()}>
+                <h4>Add as Ally or Enemy?</h4>
+                <p>Choose how to add {selectedMonster.name}:</p>
+                <div className="tracker-list">
+                  <button
+                    className="tracker-option ally-option"
+                    onClick={() => handleAddToTracker(selectedTrackerKey, 'ally')}
+                  >
+                    ✓ Ally
+                  </button>
+                  <button
+                    className="tracker-option enemy-option"
+                    onClick={() => handleAddToTracker(selectedTrackerKey, 'enemy')}
+                  >
+                    ⚔ Enemy
+                  </button>
+                </div>
+                <button 
+                  className="cancel-button"
+                  onClick={() => {
+                    setShowTypeSelector(false);
+                    setSelectedTrackerKey(null);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
 
           {loading ? (
             <div className="loading">Loading...</div>
