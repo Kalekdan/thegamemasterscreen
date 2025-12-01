@@ -104,17 +104,22 @@ const ScreenManager = ({ isOpen, onClose, onLoadScreen, currentScreenConfig }) =
     if (!file) return;
 
     try {
+      console.log('Importing screen from file:', file.name);
       const screenData = await importScreenFromFile(file);
-      const screenId = generateScreenId();
-      
-      const success = saveScreenToStorage(screenId, screenData);
-      if (success) {
-        loadScreensList();
-        alert('Screen imported successfully!');
-      } else {
-        alert('Failed to save imported screen');
+
+      // Ensure a name exists for UI purposes when loading
+      if (!screenData.name) {
+        screenData.name = file.name.replace(/\.json$/i, '') || 'Imported Screen';
       }
+
+      console.log('Imported screen data:', screenData);
+
+      // Load imported screen directly without saving to localStorage
+      onLoadScreen(screenData);
+      onClose();
+      alert('Screen imported and loaded (not saved).');
     } catch (error) {
+      console.error('Import failed:', error);
       alert(error.message || 'Failed to import screen');
     }
 
