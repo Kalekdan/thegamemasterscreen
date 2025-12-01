@@ -155,6 +155,7 @@
   border-color: #a0522d;
 }
 
+.save-load-btn,
 .settings-btn {
   background-color: rgba(255, 255, 255, 0.1);
   border: 2px solid transparent;
@@ -166,23 +167,28 @@
   color: inherit;
 }
 
+.save-load-btn:hover,
 .settings-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
 }
 
+.App.theme-light .save-load-btn,
 .App.theme-light .settings-btn {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.App.theme-light .save-load-btn:hover,
 .App.theme-light .settings-btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+.App.theme-parchment .save-load-btn,
 .App.theme-parchment .settings-btn {
   background-color: rgba(139, 69, 19, 0.1);
 }
 
+.App.theme-parchment .save-load-btn:hover,
 .App.theme-parchment .settings-btn:hover {
   background-color: rgba(139, 69, 19, 0.2);
 }

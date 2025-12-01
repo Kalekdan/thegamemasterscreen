@@ -1,10 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Clock.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Clock = ({ onDragStart, onDragEnd }) => {
+const Clock = ({ onDragStart, onDragEnd, componentKey }) => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const intervalRef = useRef(null);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.elapsedTime !== undefined) setElapsedTime(savedState.elapsedTime);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when elapsed time changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        elapsedTime,
+        isRunning: false // Don't restore as running
+      });
+    }
+  }, [componentKey, elapsedTime, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

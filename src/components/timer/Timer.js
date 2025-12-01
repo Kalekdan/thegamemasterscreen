@@ -1,13 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Timer.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Timer = ({ onDragStart, onDragEnd }) => {
+const Timer = ({ onDragStart, onDragEnd, componentKey }) => {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [customMinutes, setCustomMinutes] = useState('');
   const [customSeconds, setCustomSeconds] = useState('');
   const [isComplete, setIsComplete] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const intervalRef = useRef(null);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.timeRemaining !== undefined) setTimeRemaining(savedState.timeRemaining);
+        if (savedState.isRunning !== undefined) setIsRunning(savedState.isRunning);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes (but only after initialization)
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        timeRemaining,
+        isRunning: false // Don't restore as running
+      });
+    }
+  }, [componentKey, timeRemaining, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

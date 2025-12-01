@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './InitiativeTracker.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult }) => {
+const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey }) => {
   const [entries, setEntries] = useState([]);
   const [currentTurn, setCurrentTurn] = useState(0);
   const [roundNumber, setRoundNumber] = useState(1);
@@ -12,6 +13,33 @@ const InitiativeTracker = ({ onDragStart, onDragEnd, setGlobalDiceResult }) => {
   const [showCustomConditionFor, setShowCustomConditionFor] = useState(null);
   const [showHpAdjustFor, setShowHpAdjustFor] = useState(null);
   const [hpAdjustValue, setHpAdjustValue] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.entries !== undefined) setEntries(savedState.entries);
+        if (savedState.currentTurn !== undefined) setCurrentTurn(savedState.currentTurn);
+        if (savedState.roundNumber !== undefined) setRoundNumber(savedState.roundNumber);
+        if (savedState.viewMode !== undefined) setViewMode(savedState.viewMode);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        entries,
+        currentTurn,
+        roundNumber,
+        viewMode
+      });
+    }
+  }, [componentKey, entries, currentTurn, roundNumber, viewMode, isInitialized]);
 
   const conditionsList = [
     'Blinded', 'Charmed', 'Concentrating', 'Deafened', 'Frightened', 'Grappled',

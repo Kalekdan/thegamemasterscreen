@@ -57,7 +57,8 @@ const GridCell = ({
       onDragStart: handleDragStart,
       onDragEnd: onDragEnd,
       setGlobalDiceResult,
-      hideTitles
+      hideTitles,
+      componentKey
     };
     
     if (componentType === 'dice-roller') {

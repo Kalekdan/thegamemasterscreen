@@ -1,12 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import './Equipment.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Equipment = ({ onDragStart, onDragEnd, setGlobalDiceResult }) => {
+const Equipment = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey }) => {
   const [equipmentList, setEquipmentList] = useState([]);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.searchTerm !== undefined) setSearchTerm(savedState.searchTerm);
+        if (savedState.selectedEquipment !== undefined) setSelectedEquipment(savedState.selectedEquipment);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        searchTerm,
+        selectedEquipment
+      });
+    }
+  }, [componentKey, searchTerm, selectedEquipment, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

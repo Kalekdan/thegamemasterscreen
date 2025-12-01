@@ -1,13 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import './Spells.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Spells = ({ onDragStart, onDragEnd, setGlobalDiceResult }) => {
+const Spells = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey }) => {
   const [spellList, setSpellList] = useState([]);
   const [selectedSpell, setSelectedSpell] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [collapsedLevels, setCollapsedLevels] = useState({});
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.searchTerm !== undefined) setSearchTerm(savedState.searchTerm);
+        if (savedState.selectedSpell !== undefined) setSelectedSpell(savedState.selectedSpell);
+        if (savedState.collapsedLevels !== undefined) setCollapsedLevels(savedState.collapsedLevels);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        searchTerm,
+        selectedSpell,
+        collapsedLevels
+      });
+    }
+  }, [componentKey, searchTerm, selectedSpell, collapsedLevels, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

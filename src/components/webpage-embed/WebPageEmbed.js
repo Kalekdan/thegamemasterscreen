@@ -1,11 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './WebPageEmbed.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const WebPageEmbed = ({ onDragStart, onDragEnd }) => {
+const WebPageEmbed = ({ onDragStart, onDragEnd, componentKey }) => {
   const [url, setUrl] = useState('');
   const [currentUrl, setCurrentUrl] = useState('');
   const [zoom, setZoom] = useState(100);
   const [controlsExpanded, setControlsExpanded] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.url !== undefined) setUrl(savedState.url);
+        if (savedState.currentUrl !== undefined) setCurrentUrl(savedState.currentUrl);
+        if (savedState.zoom !== undefined) setZoom(savedState.zoom);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        url,
+        currentUrl,
+        zoom
+      });
+    }
+  }, [componentKey, url, currentUrl, zoom, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

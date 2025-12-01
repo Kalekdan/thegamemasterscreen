@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Checklist.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Checklist = ({ onDragStart, onDragEnd }) => {
+const Checklist = ({ onDragStart, onDragEnd, componentKey }) => {
   const [items, setItems] = useState([]);
   const [newItemText, setNewItemText] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.items !== undefined) setItems(savedState.items);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when items change
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, { items });
+    }
+  }, [componentKey, items, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

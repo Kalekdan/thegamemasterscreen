@@ -5,6 +5,8 @@ import DMGrid from './components/DMGrid';
 import ComponentSelector from './components/ComponentSelector';
 import DiceResultOverlay from './components/shared/DiceResultOverlay';
 import Settings from './components/shared/Settings';
+import ScreenManager from './components/shared/ScreenManager';
+import { saveComponentState } from './utils/screenStorage';
 
 function App() {
   const [rows, setRows] = useState(2);
@@ -18,6 +20,7 @@ function App() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFullscreenClose, setShowFullscreenClose] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showScreenManager, setShowScreenManager] = useState(false);
   const [settings, setSettings] = useState({
     rows: 2,
     columns: 4,
@@ -297,6 +300,64 @@ function App() {
     }
   }, [settings.rows, settings.columns, rows, cols, handleRowsChange, handleColsChange]);
 
+  const handleLoadScreen = useCallback((screenData) => {
+    // Apply settings
+    const newSettings = {
+      ...settings,
+      rows: screenData.settings.rows,
+      columns: screenData.settings.columns,
+      theme: screenData.settings.theme,
+      diceOverlay: screenData.settings.diceOverlay,
+      diceOverlayDuration: screenData.settings.diceOverlayDuration,
+      hideTitles: screenData.settings.hideTitles
+    };
+    setSettings(newSettings);
+    setRows(screenData.settings.rows);
+    setCols(screenData.settings.columns);
+
+    // Restore components
+    const newCells = {};
+    const newCellSpans = {};
+    const newComponentInstances = {};
+
+    // First pass: create component keys and save state to localStorage BEFORE rendering
+    screenData.components.forEach((component, index) => {
+      // Create unique component key with index to ensure uniqueness
+      const componentKey = `${component.componentType}-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`;
+      
+      newCells[component.cellId] = componentKey;
+      newCellSpans[component.cellId] = {
+        colSpan: component.colSpan,
+        rowSpan: component.rowSpan
+      };
+      newComponentInstances[componentKey] = {
+        type: component.componentType
+      };
+
+      // Restore component state to localStorage BEFORE React renders the component
+      if (component.state && Object.keys(component.state).length > 0) {
+        saveComponentState(componentKey, component.state);
+      }
+    });
+
+    // Now update React state to trigger component rendering
+    // Components will find their state already in localStorage
+    setCells(newCells);
+    setCellSpans(newCellSpans);
+    setComponentInstances(newComponentInstances);
+  }, [settings]);
+
+  const getCurrentScreenConfig = useCallback(() => {
+    return {
+      rows,
+      cols,
+      cells,
+      cellSpans,
+      componentInstances,
+      settings
+    };
+  }, [rows, cols, cells, cellSpans, componentInstances, settings]);
+
   return (
     <div 
       className={`App theme-${settings.theme} ${isFullscreen ? 'fullscreen-mode' : ''} ${settings.hideTitles ? 'hide-titles' : ''}`}
@@ -309,6 +370,13 @@ function App() {
               <p>Click on any grid cell to add a component</p>
             </div>
             <div className="header-controls">
+              <button 
+                className="save-load-btn"
+                onClick={() => setShowScreenManager(true)}
+                title="Save/Load Screens"
+              >
+                💾
+              </button>
               <button 
                 className="settings-btn"
                 onClick={() => setShowSettings(true)}
@@ -352,6 +420,12 @@ function App() {
         onClose={() => setShowSettings(false)}
         settings={settings}
         onSettingsChange={handleSettingsChange}
+      />
+      <ScreenManager
+        isOpen={showScreenManager}
+        onClose={() => setShowScreenManager(false)}
+        onLoadScreen={handleLoadScreen}
+        currentScreenConfig={getCurrentScreenConfig()}
       />
       {settings.diceOverlay && <DiceResultOverlay diceResult={globalDiceResult} />}
       {isFullscreen && showFullscreenClose && (

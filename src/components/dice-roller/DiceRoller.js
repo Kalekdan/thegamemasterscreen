@@ -1,11 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './DiceRoller.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const DiceRoller = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout }) => {
+const DiceRoller = ({ onDragStart, onDragEnd, setGlobalDiceResult, overlayTimeout, componentKey }) => {
   const [results, setResults] = useState([]);
   const [diceFormula, setDiceFormula] = useState('');
   const [formulaError, setFormulaError] = useState('');
   const [rollMode, setRollMode] = useState('flat'); // 'flat', 'advantage', 'disadvantage'
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.rollMode !== undefined) setRollMode(savedState.rollMode);
+        if (savedState.diceFormula !== undefined) setDiceFormula(savedState.diceFormula);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        rollMode,
+        diceFormula
+      });
+    }
+  }, [componentKey, rollMode, diceFormula, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

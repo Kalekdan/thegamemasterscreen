@@ -1,10 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Notes.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const Notes = ({ onDragStart, onDragEnd }) => {
+const Notes = ({ onDragStart, onDragEnd, componentKey }) => {
   const [content, setContent] = useState('');
   const [isPreview, setIsPreview] = useState(false);
   const [scale, setScale] = useState(100);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount and when componentKey changes
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.content !== undefined) setContent(savedState.content);
+        if (savedState.isPreview !== undefined) setIsPreview(savedState.isPreview);
+        if (savedState.scale !== undefined) setScale(savedState.scale);
+      }
+      // Mark as initialized after loading
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when content, preview, or scale changes (but only after initialization)
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        content,
+        isPreview,
+        scale
+      });
+    }
+  }, [componentKey, content, isPreview, scale, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();

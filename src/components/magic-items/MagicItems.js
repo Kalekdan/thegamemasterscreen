@@ -1,12 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import './MagicItems.css';
+import { saveComponentState, getComponentState } from '../../utils/screenStorage';
 
-const MagicItems = ({ onDragStart, onDragEnd, setGlobalDiceResult }) => {
+const MagicItems = ({ onDragStart, onDragEnd, setGlobalDiceResult, componentKey }) => {
   const [itemList, setItemList] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load state on mount
+  useEffect(() => {
+    if (componentKey) {
+      const savedState = getComponentState(componentKey);
+      if (savedState) {
+        if (savedState.searchTerm !== undefined) setSearchTerm(savedState.searchTerm);
+        if (savedState.selectedItem !== undefined) setSelectedItem(savedState.selectedItem);
+      }
+      setIsInitialized(true);
+    }
+  }, [componentKey]);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (componentKey && isInitialized) {
+      saveComponentState(componentKey, {
+        searchTerm,
+        selectedItem
+      });
+    }
+  }, [componentKey, searchTerm, selectedItem, isInitialized]);
 
   const handleHeaderDragStart = (e) => {
     e.stopPropagation();
