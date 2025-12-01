@@ -8,6 +8,7 @@ Try it now at: **[thegamemasterscreen.com](https://thegamemasterscreen.com)**
 
 ## ✨ Features
 *Customizable grid layout - click any cell to add a component, resize and move to wherever you need them*
+
 *Wide variety of utilities and D&D 2024 Edition rules reference components*
 
 ![Multiple Components](https://github.com/user-attachments/assets/774f9cb9-a5b4-496d-a725-d8ed5ceaf16f)
