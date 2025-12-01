@@ -136,37 +136,9 @@
   opacity: 1;
 }
 
-/* Empty state message */
-.empty-message {
-  text-align: center;
-  color: #666;
-  padding: 20px;
-  font-style: italic;
-  font-size: 14px;
-}
+/* Empty state message - uses shared .empty-message from components-shared.css */
 
-/* Scrollbar styling */
-.template-content::-webkit-scrollbar,
-.template-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.template-content::-webkit-scrollbar-track,
-.template-list::-webkit-scrollbar-track {
-  background: #1e1e1e;
-  border-radius: 4px;
-}
-
-.template-content::-webkit-scrollbar-thumb,
-.template-list::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 4px;
-}
-
-.template-content::-webkit-scrollbar-thumb:hover,
-.template-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+/* Scrollbar styling - uses shared scrollbar styles from components-shared.css */
 
 /* Responsive adjustments */
 @media (max-width: 400px) {

@@ -30,21 +30,7 @@
   padding-bottom: 3px;
 }
 
-.error-message {
-  background-color: #d63031;
-  color: white;
-  padding: 6px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 11px;
-}
-
-.loading {
-  text-align: center;
-  color: #888;
-  padding: 15px;
-  font-style: italic;
-}
+/* Error and loading messages - uses shared styles from components-shared.css */
 
 /* Spell List View */
 .spell-list-view {
@@ -59,24 +45,9 @@
   width: 100%;
 }
 
-.spell-search {
-  width: 100%;
-  padding: 4px 6px;
-  background-color: #2a2a2a;
-  border: 2px solid #444;
-  border-radius: 6px;
-  color: white;
-  font-size: 11px;
-  box-sizing: border-box;
-}
-
+/* spell-search uses shared input styles from components-shared.css via .search-box input */
 .spell-search:focus {
-  outline: none;
   border-color: #a29bfe;
-}
-
-.spell-search::placeholder {
-  color: #666;
 }
 
 .spell-list {
@@ -87,12 +58,7 @@
   flex: 1;
 }
 
-.no-results {
-  padding: 15px;
-  text-align: center;
-  color: #888;
-  font-style: italic;
-}
+/* No results message - uses shared .no-results from components-shared.css */
 
 .spell-level-group {
   display: flex;
@@ -184,21 +150,7 @@
   padding-right: 5px;
 }
 
-.back-button {
-  align-self: flex-start;
-  padding: 5px 10px;
-  background-color: #444;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.back-button:hover {
-  background-color: #555;
-}
+/* Back button - uses shared .back-button styles from components-shared.css */
 
 .spell-name {
   margin: 3px 0 2px 0;
@@ -215,43 +167,7 @@
   margin-bottom: 3px;
 }
 
-.stat-block {
-  background-color: #2a2a2a;
-  padding: 6px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 2px 0;
-  border-bottom: 1px solid #333;
-}
-
-.stat-row:last-child {
-  border-bottom: none;
-}
-
-.stat-label {
-  font-weight: bold;
-  color: #a29bfe;
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  flex-shrink: 0;
-}
-
-.stat-value {
-  text-align: right;
-  color: #ddd;
-  font-size: 9px;
-  flex: 1;
-}
+/* Stat block - uses shared styles from components-shared.css (label color already matches) */
 
 .spell-description {
   background-color: #2a2a2a;
@@ -335,16 +251,4 @@
   color: #a29bfe;
 }
 
-/* Dice roll links */
-.dice-roll-link {
-  color: #74b9ff;
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.dice-roll-link:hover {
-  color: #5fa3e8;
-  text-decoration: none;
-}
+/* Dice roll links - uses shared styles from components-shared.css */

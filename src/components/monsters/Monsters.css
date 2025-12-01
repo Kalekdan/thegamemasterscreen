@@ -30,21 +30,7 @@
   padding-bottom: 3px;
 }
 
-.error-message {
-  background-color: #d63031;
-  color: white;
-  padding: 6px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 11px;
-}
-
-.loading {
-  text-align: center;
-  color: #888;
-  padding: 15px;
-  font-style: italic;
-}
+/* Error and loading messages - uses shared styles from components-shared.css */
 
 /* Monster List View */
 .monster-list-view {
@@ -59,24 +45,9 @@
   width: 100%;
 }
 
-.monster-search {
-  width: 100%;
-  padding: 4px 6px;
-  background-color: #2a2a2a;
-  border: 2px solid #444;
-  border-radius: 6px;
-  color: white;
-  font-size: 11px;
-  box-sizing: border-box;
-}
-
+/* monster-search uses shared input styles from components-shared.css via .search-box input */
 .monster-search:focus {
-  outline: none;
   border-color: #ff6b6b;
-}
-
-.monster-search::placeholder {
-  color: #666;
 }
 
 .monster-list {
@@ -87,23 +58,7 @@
   flex: 1;
 }
 
-.monster-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.monster-list::-webkit-scrollbar-track {
-  background: #1e1e1e;
-  border-radius: 4px;
-}
-
-.monster-list::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 4px;
-}
-
-.monster-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+/* Scrollbar styling - uses shared scrollbar styles from components-shared.css */
 
 .monster-list-item {
   background-color: #2a2a2a;
@@ -142,19 +97,8 @@
 }
 
 .back-button {
-  padding: 5px 10px;
-  background-color: #444;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
+  /* Uses shared .back-button styles from components-shared.css */
   flex-shrink: 0;
-}
-
-.back-button:hover {
-  background-color: #555;
 }
 
 .add-to-initiative-btn {
@@ -198,42 +142,10 @@
   margin-bottom: 3px;
 }
 
-.stat-block {
-  background-color: #2a2a2a;
-  padding: 6px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 3px 0;
-  border-bottom: 1px solid #333;
-}
-
-.stat-row:last-child {
-  border-bottom: none;
-}
-
+/* Stat block - uses shared styles from components-shared.css */
 .stat-label {
-  font-weight: bold;
+  /* Override color for monster theme */
   color: #e74c3c;
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  flex-shrink: 0;
-}
-
-.stat-value {
-  text-align: right;
-  color: #ddd;
-  font-size: 9px;
-  flex: 1;
 }
 
 .ability-scores {
@@ -306,19 +218,7 @@
   color: #ff6b6b;
 }
 
-/* Dice roll links */
-.dice-roll-link {
-  color: #74b9ff;
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.dice-roll-link:hover {
-  color: #5fa3e8;
-  text-decoration: none;
-}
+/* Dice roll links - uses shared styles from components-shared.css */
 
 /* Tracker Selector Modal */
 .tracker-selector-modal {

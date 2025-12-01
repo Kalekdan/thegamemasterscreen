@@ -223,12 +223,7 @@
   padding: 8px;
 }
 
-.empty-message {
-  text-align: center;
-  color: #666;
-  padding: 30px 15px;
-  font-style: italic;
-}
+/* Empty message - uses shared .empty-message from components-shared.css */
 
 .initiative-entry {
   border: 2px solid #444;
@@ -934,20 +929,4 @@
   border-color: #a29bfe;
 }
 
-/* Scrollbar styling */
-.initiative-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.initiative-list::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-.initiative-list::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 4px;
-}
-
-.initiative-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+/* Scrollbar styling - uses shared scrollbar styles from components-shared.css */

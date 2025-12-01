@@ -20,21 +20,7 @@
   font-size: 14px;
 }
 
-.error-message {
-  background-color: #d63031;
-  color: white;
-  padding: 6px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 11px;
-}
-
-.loading {
-  text-align: center;
-  color: #888;
-  padding: 15px;
-  font-style: italic;
-}
+/* Error and loading messages - uses shared styles from components-shared.css */
 
 /* Condition List View */
 .condition-list-view {
@@ -49,24 +35,9 @@
   width: 100%;
 }
 
-.condition-search {
-  width: 100%;
-  padding: 4px 6px;
-  background-color: #2a2a2a;
-  border: 2px solid #444;
-  border-radius: 6px;
-  color: white;
-  font-size: 11px;
-  box-sizing: border-box;
-}
-
+/* condition-search uses shared input styles from components-shared.css via .search-box input */
 .condition-search:focus {
-  outline: none;
   border-color: #9b59b6;
-}
-
-.condition-search::placeholder {
-  color: #666;
 }
 
 .condition-list {
@@ -77,12 +48,7 @@
   flex: 1;
 }
 
-.no-results {
-  padding: 15px;
-  text-align: center;
-  color: #888;
-  font-style: italic;
-}
+/* No results message - uses shared .no-results from components-shared.css */
 
 .condition-list-item {
   background-color: #2a2a2a;
@@ -114,21 +80,7 @@
   padding-right: 5px;
 }
 
-.back-button {
-  align-self: flex-start;
-  padding: 5px 10px;
-  background-color: #444;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.back-button:hover {
-  background-color: #555;
-}
+/* Back button - uses shared .back-button styles from components-shared.css */
 
 .condition-name {
   margin: 3px 0 2px 0;

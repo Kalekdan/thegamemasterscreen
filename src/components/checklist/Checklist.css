@@ -141,9 +141,4 @@
   background-color: #c0281e;
 }
 
-.empty-message {
-  text-align: center;
-  color: #666;
-  padding: 20px;
-  font-style: italic;
-}
+/* Empty message - uses shared .empty-message from components-shared.css */
