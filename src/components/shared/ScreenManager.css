@@ -295,6 +295,21 @@
   background-color: #555;
 }
 
+.storage-warning {
+  background-color: #3a2a1a;
+  border: 1px solid #8b6914;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 20px;
+  color: #ffd700;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.storage-warning strong {
+  color: #ffaa00;
+}
+
 /* Theme support */
 .theme-light .screen-manager-modal {
   background-color: #f5f5f5;

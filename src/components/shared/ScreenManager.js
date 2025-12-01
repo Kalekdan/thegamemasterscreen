@@ -162,6 +162,11 @@ const ScreenManager = ({ isOpen, onClose, onLoadScreen, currentScreenConfig }) =
       <div className="screen-manager-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Screen Manager</h2>
         
+        <div className="storage-warning">
+          <strong>⚠️ Note:</strong> Screens are saved in your browser's local storage and may be cleared if you clear your browser cache. 
+          Use the Export feature to back up important screens.
+        </div>
+        
         <div className="screen-manager-actions">
           <button className="action-btn primary" onClick={handleQuickSave}>
             💾 Save Current Screen
